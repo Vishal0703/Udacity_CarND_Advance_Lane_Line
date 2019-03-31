@@ -57,7 +57,7 @@ The problem with the above approach was found in the example below, where the so
 
 ![Grayscale Image](/img/fact.png "Grayscale" )
 
-Here as we can see, the actual lane lies on the upper half of the image, so applying a histogram search only on the lower part of image would result in incorrect start position.
+Here as we can see, the actual right lane lies on the upper half of the image, so applying a histogram search only on the lower part of image would result in incorrect start position.
 
 So, a thresholding of 800 has been used around the found column within a window of 100 for asserting it to be a starting position. If this condition is not met, then we do `fact = fact*2`, i.e increase our search space.
 
@@ -91,6 +91,7 @@ Given below are examples without and with use of this function respectively. (ho
 **With applying Check Roughly Parallel**
 
 ![3 Image](/img/source_with_check.png "Original" )
+
 ![4 Image](/img/poly_with_check.png "Lanes" )
 
 ### ROC Calculation
