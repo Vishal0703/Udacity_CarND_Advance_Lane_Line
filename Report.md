@@ -24,7 +24,7 @@ The notebook corresponding to this project is `ALF.ipynb`
 Then looped through all the images to further enhance the CameraMatrix and to have better calibration.
 Used `cv2.undistort()` to undistort the images. Example provided below (hover to see title):
 
-![Undistorted Image](/img/test_image.png "Original" )
+![original Image](/img/original_test_image.png "Original" )
 ![Undistorted Image](/img/undistorted_test_image.png "Undistorted" )
 
 
@@ -34,10 +34,10 @@ Used `cv2.undistort()` to undistort the images. Example provided below (hover to
 `dst = np.array([[320,0],[320,720],[960,720],[960,0]],dtype=np.float32)`
 
 Used the above points to find the Perspective Transform Matrix and the Inverse Perspective Transform Matrix.
-An example of perspective transformed image provided below:
+An example of perspective transformed image provided below (hover to see title):
 
-![Undistorted Image](/img/straight_lines.png "Original" )
-![Undistorted Image](/img/warp_st1.png "Warped Image" )
+![Original Image](/img/straight_lines.png "Original" )
+![Undistorted Image](/img/warped.png "Warped Image" )
 
 ### Thresholding
 
@@ -53,9 +53,9 @@ shifting mean window position to new point `if pixels found in window > minpix`.
 Before using window search, to initialise the centres of left and right window it draws a histogram and </br>
 then uses the maximum column in each of the left and right half of the image for it.
 
-The problem with the above approach was found in the example below, where the some non-lane pixels got activated and the actual lane pixels were in the top half of the image.
+The problem with the above approach was found in the example below, where the some non-lane pixels got activated and the actual lane pixels were in the top half of the image. (hover to see title)
 
-![Undistorted Image](/img/fact.png "Grayscale" )
+![Grayscale Image](/img/fact.png "Grayscale" )
 
 Here as we can see, the actual lane lies on the upper half of the image, so applying a histogram search only on the lower part of image would result in incorrect start position.
 
@@ -80,18 +80,18 @@ It then compares the slope and if the avg absolute difference exceeds a certain 
 
 The strong lane is the one with more number of pixels overall because that gives us a more concrete idea of the correct curvature.  
 
-Given below are examples without and with use of this function respectively.
+Given below are examples without and with use of this function respectively. (hover to see title)
 
 **Without applying Check Roughly Parallel**
 
-![Undistorted Image](/img/source_without_check.png "Original" )
+![1 Image](/img/source_without_check.png "Original" )
 
-![Undistorted Image](/img/poly_without_check.png "Lanes" )
+![2 Image](/img/poly_without_check.png "Lanes" )
 
 **With applying Check Roughly Parallel**
 
-![Undistorted Image](/img/source_with_check.png "Original" )
-![Undistorted Image](/img/poly_with_check.png "Lanes" )
+![3 Image](/img/source_with_check.png "Original" )
+![4 Image](/img/poly_with_check.png "Lanes" )
 
 ### ROC Calculation
 
