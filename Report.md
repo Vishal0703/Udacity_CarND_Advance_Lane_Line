@@ -122,4 +122,4 @@ Finally the video generator passes images from input_video to `draw` function, g
 ## Further Improvements
 
 1. Better initial point selection methods, as challenge_video output's initial lane line positions were not good.
-2. In this project, the video used never had any car in front of our car, so what if there is a car very close, then this method is bound to fail as there will be a lot of noisy gradients around. A way around this can be to create 2 vision cones from each side of our car as the lane lines are on our sides, and then focus on lanes. A lot of consideration will nedd to be taken for this too, but one can start with this idea. 
+2. In this project, the video used never had any car in front of our car, so what if there is a car very close, then this method is bound to fail as there will be a lot of noisy gradients around. A way around this can be to create 2 vision cones from each side of our car as the lane lines are on our sides, and then focus on lanes. A lot of consideration needs to be taken for this too, but one can start with this idea. 
