@@ -55,19 +55,42 @@ starting position. If this condition is not met, then we do `fact = fact*2`, i.e
 A line class has been created to keep track of various attributes of the line during lane identification in a video </br>
 to reduce computation of everything again from scratch.
 
+### Fit Polynomial
+
+Fits polynomials for both the left and right lanes based on the lane pixels found above.
+
+### Check Roughly Parallel
+
+This was an important function to make the lanes robust and improve upon various things like correct lane boundary finding and correct ROC(Radius of Curvature) calculation.
+
+This function checks the slope of both the found left and right lanes on a subset of `y_values`(in the code 1/10th of original number of `y_pixels`.)
+
+It then compares the slope and if the avg absolute difference exceeds a certain threshold, it assigns both the lanes the slope value equal to that of the guiding/strong lane.
+
+The strong lane is the one with more number of pixels overall because that gives us a more concrete idea of the correct curvature.  
+
+Given below are examples without and with use of this function respectively.
+
+### ROC Calculation
+
+Rather than again fitting a curve with the new y and x values in metre, I used a transformation on the co-efficients of the calculated 2-D curve.
+
+If the calculated curve is `x = a(y**2) + b(y) + c` (where x and y are in pixels) and `x_in_metre/x_in_pixel = p` and `x_in_metre/x_in_pixel = q`, </br>
+
+then the new calculated curve is `x = a'(y**2) + b'(y) + c'` (where x and y are in metre) and </br>
+`a' = (p*a/(q**2))` `b' = p*b/q` and `c' = p*c` 
+
+### Search Around Polynomial
+
+Once the polynomial is calculated for the lanes, for the next image in the video frame one doesn't need to again build the polynomial from scratch. Using the save parameters in the Line Class, I searched only around the current polynomials within a window of 100 on each side and adjusted the polynomial co-efficients. 
+
+### Draw on Image
+
+This function draws the calculated left and right lanes on the image and fills a semi-transparent region in between the lanes for the whole region identification.
+
+### Draw
+
+This function is the main drawing function for video input. It calculates the polynomial for 1st time and then improves upon it using `search_around_poly`. It calls all the above modules and accordingly produces output. It also decides whether to start again from scratch or continue from previous polynomial by thresholding on the avg absolute difference between current co-efficients and best co-efficients till now. 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Finally the video generator passes images from input_video to `draw` function, generates output video frames and combines them to form an output video.
