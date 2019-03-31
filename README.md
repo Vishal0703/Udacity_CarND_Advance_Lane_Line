@@ -20,3 +20,5 @@ To run the files, navigate to "ALF.ipynb" and follow the instructions.
 
 An output of "project_video.mp4" named "project_video_output.mp4" has been provided in the repo. You can have a look at it for the final output of the code.
 
+For implementation details and discussion check "Report.md"
+
