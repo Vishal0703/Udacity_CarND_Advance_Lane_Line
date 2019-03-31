@@ -13,16 +13,22 @@ The goals / steps of this project are the following:
 
 The notebook corresponding to this project is `ALF.ipynb`
 
-## Camera Calibration
+## Implementation Details
+
+### Camera Calibration
 
 1. Calculated a `nx*ny` 2D grid and then converted it into a 3D `object_point` with `z=0`.
 2. Used `cv2.findChessboardCorners()` to find the corners of the chessboard image and made it into `image_point`.
 3. Used `cv2.calibrateCamera()` to find the Camera Matrix and Distortion coefficients.
 
 Then looped through all the images to further enhance the CameraMatrix and to have better calibration.
-Used `cv2.undistort()` to undistort the images. Example provided below:
+Used `cv2.undistort()` to undistort the images. Example provided below (hover to see title):
 
-## Perspective Transform
+![Undistorted Image](/img/test_image.png "Original" )
+![Undistorted Image](/img/undistorted_test_image.png "Undistorted" )
+
+
+### Perspective Transform
 
 `src = np.array([[585,460],[203,720],[1127,720],[695,460]],dtype=np.float32)` </br>
 `dst = np.array([[320,0],[320,720],[960,720],[960,0]],dtype=np.float32)`
@@ -30,7 +36,10 @@ Used `cv2.undistort()` to undistort the images. Example provided below:
 Used the above points to find the Perspective Transform Matrix and the Inverse Perspective Transform Matrix.
 An example of perspective transformed image provided below:
 
-## Thresholding
+![Undistorted Image](/img/straight_lines.png "Original" )
+![Undistorted Image](/img/warp_st1.png "Warped Image" )
+
+### Thresholding
 
 Used absolute direction gradient threshold, total gradient magnitude threshold, direction threshold and S-Channel threshold.
 The exact threshold values and the function used to create a binary threshold has been provided in the notebook.
@@ -44,11 +53,13 @@ shifting mean window position to new point `if pixels found in window > minpix`.
 Before using window search, to initialise the centres of left and right window it draws a histogram and </br>
 then uses the maximum column in each of the left and right half of the image for it.
 
-The problem with the above approach was found in the example below, where the some non-lane pixels got activated </br>
-and the actual lane pixels were in the top half of the image.
+The problem with the above approach was found in the example below, where the some non-lane pixels got activated and the actual lane pixels were in the top half of the image.
 
-So, a thresholding of 800 has been used around the found column within a window of 100 for asserting it to be a </br>
-starting position. If this condition is not met, then we do `fact = fact*2`, i.e increase our search space.
+![Undistorted Image](/img/fact.png "Grayscale" )
+
+Here as we can see, the actual lane lies on the upper half of the image, so applying a histogram search only on the lower part of image would result in incorrect start position.
+
+So, a thresholding of 800 has been used around the found column within a window of 100 for asserting it to be a starting position. If this condition is not met, then we do `fact = fact*2`, i.e increase our search space.
 
 ### Line Class
 
@@ -70,6 +81,17 @@ It then compares the slope and if the avg absolute difference exceeds a certain 
 The strong lane is the one with more number of pixels overall because that gives us a more concrete idea of the correct curvature.  
 
 Given below are examples without and with use of this function respectively.
+
+**Without applying Check Roughly Parallel**
+
+![Undistorted Image](/img/source_without_check.png "Original" )
+
+![Undistorted Image](/img/poly_without_check.png "Lanes" )
+
+**With applying Check Roughly Parallel**
+
+![Undistorted Image](/img/source_with_check.png "Original" )
+![Undistorted Image](/img/poly_with_check.png "Lanes" )
 
 ### ROC Calculation
 
@@ -94,3 +116,9 @@ This function is the main drawing function for video input. It calculates the po
 
 
 Finally the video generator passes images from input_video to `draw` function, generates output video frames and combines them to form an output video.
+
+
+## Further Improvements
+
+1. Better initial point selection methods, as challenge_video output's initial lane line positions were not good.
+2. In this project, the video used never had any car in front of our car, so what if there is a car very close, then this method is bound to fail as there will be a lot of noisy gradients around. A way around this can be to create 2 vision cones from each side of our car as the lane lines are on our sides, and then focus on lanes. A lot of consideration will nedd to be taken for this too, but one can start with this idea. 
